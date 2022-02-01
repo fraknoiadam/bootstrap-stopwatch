@@ -22,9 +22,6 @@
 									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">00:00:00</div>
 								</div>
 							</div>
-							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 							<div class="row">
 								<div id="divStart" class="span4 center">
 									<button id="btnStart" class="btn btn-large btn-block btn-primary" style="font-weight:bold;" data-do="start" type="button">Start</button>
@@ -96,34 +93,30 @@
 					adjustHeight();
 				});
 
-				var startTime; 
-				var timeout;
-				var pauseTime = 0;
-				var mils;
-				var paused = false;
-				var count = 0;
+				let startTime; 
+				let timeout;
+				let pauseTime = 0;
+				let mils;
+				let paused = false;
+				let init = true
+				let count = 0;
 				$('#time').on('click', function(){
-					/*if(mils != undefined){
-						if(mils > 0){
-							$('#lapInst').hide();	
-							var time = milToTime(mils);
-							//alert(mils);
-							time = formatTime(time);		
-							count += 1;
-							$('#timeTable thead').show();
-							$('#lapList').prepend('<tr class="timeRow"><td class="lapCount muted">' + count + ".</td><td>" +time.h +':'+time.m +':'+time.s + '.' + time.mils+  '</td></tr>');
-							$('#lapListCont').animate({ scrollTop: 0 }, "fast");
-						}
-					}*/
-					if(paused == false){
-						paused = true;
-						clearTimeout(timeout);	
-						pauseTime = mils;
-						$('#time').addClass('paused');
-					}else{
-						paused = false;
+					if (init == true){
+						init = false
 						startTime = new Date();
 						clock();
+					} else {
+						if(paused == false){
+							paused = true;
+							clearTimeout(timeout);	
+							pauseTime = mils;
+							$('#time').addClass('paused');
+						}else{
+							paused = false;
+							startTime = new Date();
+							clock();
+						}
+
 					}
 				});
 				
