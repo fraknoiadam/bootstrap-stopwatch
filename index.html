@@ -13,58 +13,13 @@
 			<link href="css/custom.css" rel="stylesheet"/>
 		</head>
 		<body>
-			<header>		
+			<header>
 				<div class="container">
 					<div class="center">
 						<div id="stopWatch">
 							<div class="row">
 								<div class="span12">
-									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">3:00:00</div>
-								</div>
-							</div>
-							<div class="row">
-								<div id="divStart" class="span4 center">
-									<button id="btnStart" class="btn btn-large btn-block btn-primary" style="font-weight:bold;" data-do="start" type="button">Start</button>
-								</div>
-							</div>
-							<div class="row hidden" id="divControls">
-								<div class="span4 center">
-									<div class="row">
-										<span class="span2 pull-left">
-											<button id="btnPause" class="btn btn-large btn-block" type="button">
-												<i class="icon-pause"></i>
-												&nbsp;&nbsp;Pause
-											</button>
-										</span>
-										<span class="span2 pull-right">
-											<button id="btnStop" class="btn btn-large btn-block" type="button">
-												<i class="icon-repeat"></i>
-												&nbsp;&nbsp;Reset
-											</button>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="clear"></div>
-						<div id="lapTimes" class="hidden row center">
-							<div class="heightlap" style="margin-top:10px;">
-								<button class="btn hidden" id="btnClear" type="button">Clear</button>
-								<p id="lapInst">Tap the time to record a lap.</p>
-							</div>
-							<div class="span12 center scrollable" id="lapListCont" style="height:0px;">
-								<div class="row">
-									<div class="span4 center" style="margin-top:5px;">
-										<table id="timeTable" class="table table-striped" style="width:70%; margin:auto;">
-											<thead class="hidden">
-												<tr>
-													<th>#</th>
-													<th>Time</th>
-												</tr>
-											</thead>
-											<tbody id="lapList"></tbody>
-										</table>
-									</div>
+									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">0:00:00</div>
 								</div>
 							</div>
 						</div>
@@ -100,7 +55,9 @@
 				let paused = false;
 				let init = true
 				let count = 0;
-				let countdown = 10800
+				let countdown = 10
+				displayMil(countdown*1000)
+
 				$('#time').on('click', function(){
 					if (init == true){
 						init = false
@@ -110,11 +67,11 @@
 						if(paused == false){
 							paused = true;
 							clearTimeout(timeout);	
-							pauseTime = mils;
+							moment_of_paused = new Date();
 							$('#time').addClass('paused');
 						}else{
 							paused = false;
-							startTime = new Date();
+							pauseTime = new Date() - moment_of_paused;
 							clock();
 						}
 
@@ -168,11 +125,16 @@
 					$('#time').removeClass('paused');
 					var curTime = new Date();
 					mils = -(curTime - startTime) + pauseTime + countdown*1000;
-					var time = milToTime(mils);
-					formatTime(time);
-					var outStr = time.h +':'+time.m +':'+time.s;
-					document.getElementById('time').innerHTML=outStr;
+					mils = Math.max(mils,0) // prevent negative time
+					displayMil(mils)
 					timeout = setTimeout(clock,20);
+				}
+
+				function displayMil(mils){
+					let time = milToTime(mils);
+					formatTime(time);
+					let outStr = time.h +':'+time.m +':'+time.s;
+					document.getElementById('time').innerHTML=outStr;
 				}
 				
 				function formatTime(time){
@@ -180,15 +142,13 @@
 						if(i == "mils"){
 							if(time[i] < 1){
 								time[i] = "000";
-							}else
-							if(time[i] < 10){
+							}else if(time[i] < 10){
 								time[i] = "00" + time[i];
-							}else  
-							if(time[i] < 100){
+							}else if(time[i] < 100){
 								time[i] = "0" + time[i];
 							}
-						}else if(time[i] < 10){
-							//time[i] = "0" + time[i];
+						}else if(i != "h" && time[i] < 10){
+							time[i] = "0" + time[i];
 						}
 					}
 					return time;		
