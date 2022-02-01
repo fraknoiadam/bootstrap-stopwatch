@@ -78,49 +78,6 @@
 					}
 				});
 				
-				$('#btnPause').on('click', function(){
-					if(paused == false){
-						paused = true;
-						clearTimeout(timeout);	
-						pauseTime = mils;
-						$(this).html('<i class="icon-play-circle"></i>&nbsp;&nbsp;Resume');
-						$('#time').addClass('paused');
-					}else{
-						paused = false;
-						$(this).html('<i class="icon-pause"></i>&nbsp;&nbsp;Pause');
-						startTime = new Date();
-						clock();
-					}
-				});
-				$('#btnStop').on('click', function(){
-						$('#title').slideDown();
-						$('#lapInst').hide();
-						$('#time').removeClass('paused');
-						paused = false;
-						clearTimeout(timeout);	
-						pauseTime = 0;
-						mils = 0;
-						$('#time').html('00:00:00');			
-						$('#btnClear').click();
-						$('#divControls').fadeOut(function(){ 
-							$('#divStart').fadeIn()
-							$('#btnPause').html('<i class="icon-pause"></i>&nbsp;&nbsp;Pause');							
-						});			
-				});	
-				$('#btnStart').on('click', function(){
-						$('#title').slideUp(function(){
-							adjustHeight();
-						});
-						var btn = $(this);
-						startTime = new Date();
-						clock();
-						$('#divStart').fadeOut(function(){ 
-							$('#divControls').fadeIn();
-							$('#lapInst').fadeIn();
-							$('#lapTimes').fadeIn();				
-						});
-				});
-
 				function clock() {
 					$('#time').removeClass('paused');
 					var curTime = new Date();
@@ -161,15 +118,6 @@
 					hours = parseInt( mil / 1000 / 3600);
 					return {s: seconds, m: minutes, h:hours, mils:mi};
 				}
-				
-				$('#btnClear').on('click', function(){
-					$('#lapList, #btnClear').fadeOut(function(){
-						$('#lapList').html('').fadeIn();
-						$('#timeTable thead').hide();
-						//$('#lapInst').fadeIn();
-						count = 0;
-					});
-				});
 			});			
 			</script>
 		</body>
