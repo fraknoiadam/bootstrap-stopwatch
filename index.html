@@ -93,6 +93,14 @@
 					var name = event.key;
 					var code = event.code;
 					if (event.altKey) {
+						if (name === 'c'){
+							document.body.style.color = "rgb(255, 255, 255)"
+							document.body.style.backgroundColor = "rgb(19, 19, 19)"
+						}
+						if (name === 'C'){
+							document.body.style.backgroundColor = "rgb(255, 255, 255)"
+							document.body.style.color = "rgb(19, 19, 19)"
+						}
 						if (name === 'b'){
 							document.getElementById("time").style.fontSize = (parseInt(document.getElementById("time").style.fontSize)-1)+"rem"
 						}

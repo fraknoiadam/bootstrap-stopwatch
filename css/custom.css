@@ -4,8 +4,8 @@
 
 body {
    padding-top: 15px;
-   color: rgb(19, 19, 19);
-   background-color: rgb(255, 255, 255);
+   background-color: rgb(19, 19, 19);
+   color: rgb(255, 255, 255);
    overflow: hidden; /* Hide scrollbars */
 }
 
