@@ -67,3 +67,19 @@ and (min-device-width : 768px)
 		margin:5px 0 5px 0; padding: 50px 0px 50px 0px;
 	}
 }
+
+div#hint {
+	display: block;
+	padding: .5em;
+	font-weight: bold;
+	transition: height 40s, width 1s, padding 1s, visibility 5s, opacity 5s ease-out; /* TODO: this is a verrrrry ugly method  */
+	opacity: 1;
+	overflow: hidden;
+	height: 1000px;
+}
+#hint.h-hide {
+	padding: 0;
+	opacity: 0;
+	height: 0;
+  }
+  

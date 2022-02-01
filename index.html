@@ -34,11 +34,15 @@
 					<p>"alt+c" és "alt+C": dark illetve white mode<br>
 					"alt+v" és "alt+V": kicsinyíted illetve növeled a timer alatti térközt.<br>
 					"alt+b" és "alt+B": kicsinyíted illetve növeled a timer méretét</p><br>
-					<label for="fname">Link of the spreadsheet:</label>
+					<label for="fname">A beágyazandó táblázat linkje:</label>
 					<input type="text" id="frame_input" name="frame_input"><br>
+					<label for="fname">Hány perccel a verseny vége előtt tűnjön el a beágyazás?</label>
+					<input type="number" value=10 id="min_fade" name="min_fade"><br>
 					<button type="button" onclick="submit()">Submit</button>
 				</div>
-				<iframe id="result" style="display: none;" width=100% height=1000px frameborder="0" src=""&widget=true></iframe>
+				<div id="hint" style="display: none;">
+					<iframe id="result" style="display: block;" width=100% height=1000px frameborder="0" src=""&widget=true></iframe>
+				</div>
 			</header>
 
 
@@ -53,11 +57,12 @@
 
 			<script type="text/javascript">
 			function submit(){
+				min_fade = parseInt(document.getElementById("min_fade").value)
 				document.getElementById("frame_form").style.display = "None"
 				let link = document.getElementById("frame_input").value
 				if (link !== ""){
 					document.getElementById("result").src = document.getElementById("frame_input").value
-					document.getElementById("result").style.display = "block"
+					document.getElementById("hint").style.display = "block"
 				}
 			}
 
@@ -72,8 +77,9 @@
 				let paused = false;
 				let init = true
 				let count = 0;
-				let countdown = 10800
+				let countdown = 602
 				let moment_of_paused = 0
+				let min_fade = 10
 				displayMil(countdown*1000)
 
 				$('#time').on('click', function(){
@@ -160,6 +166,11 @@
 				function displayMil(mils){
 					let time = milToTime(mils);
 					formatTime(time);
+					if(time.h === 0 && time.m<min_fade){ // TODO: consider hours
+						document.getElementById("result").display = "None"
+						var hint = document.getElementById('hint');
+						hint.classList.add('h-hide');
+					}
 					let outStr = time.h +':'+time.m +':'+time.s;
 					document.getElementById('time').innerHTML=outStr;
 				}
