@@ -24,7 +24,13 @@
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>
+				<div id=frame_form>
+					<label for="fname">Link of the spreadsheet:</label><br>
+					<input type="text" id="frame_input" name="frame_input"><br>
+					<button type="button" onclick="submit()">Submit</button>
+				</div>
+				<iframe id="result" style="display: none;" width=100% height=1000px frameborder="0" src=""&widget=true></iframe>
 			</header>
 
 
@@ -38,15 +44,18 @@
 			<script src="js/jquery.fittext.js"></script>
 
 			<script type="text/javascript">
-			$(document).ready(function(){
-
-				function adjustHeight(){
-					$('#lapListCont').height( ($(window).height() - $('#stopWatch').height() - $('#heightlap').height() - 110) + "px") ;
+			function submit(){
+				document.getElementById("frame_form").style.display = "None"
+				let link = document.getElementById("frame_input").value
+				if (link !== ""){
+					document.getElementById("result").src = document.getElementById("frame_input").value
+					document.getElementById("result").style.display = "block"
 				}
-				adjustHeight();
-				$(window).on('resize', function(){
-					adjustHeight();
-				});
+			}
+
+			$(document).ready(function(){
+				document.getElementById("time").style.fontSize = "10rem"
+				document.getElementsByClassName("center")[0].style.marginBottom = "0px"
 
 				let startTime; 
 				let timeout;
@@ -83,35 +92,46 @@
 				document.addEventListener('keydown', (event) => {
 					var name = event.key;
 					var code = event.code;
-					console.log(event)
-					if (name === 'Control') {
-						// Do nothing.
-						return;
-					}
 					if (event.altKey) {
+						if (name === 'b'){
+							document.getElementById("time").style.fontSize = (parseInt(document.getElementById("time").style.fontSize)-1)+"rem"
+						}
+						if (name === 'B'){
+							document.getElementById("time").style.fontSize = (parseInt(document.getElementById("time").style.fontSize)+1)+"rem"
+						}
+						if (name === 'v'){
+							document.getElementsByClassName("center")[0].style.marginBottom = (parseInt(document.getElementsByClassName("center")[0].style.marginBottom)-1)+"px"
+						}
+						if (name === 'V'){
+							document.getElementsByClassName("center")[0].style.marginBottom = (parseInt(document.getElementsByClassName("center")[0].style.marginBottom)+1)+"px"
+						}
 						if (name === 'h'){
-							countdown = Math.max(0,countdown-60*60)
-							console.log(max(0,countdown-60*60))
+							addSecondsToTimer(-3600)
 						}
 						if (name === 'H'){
-							countdown += 60*60
+							addSecondsToTimer(3600)
 						}
 						if (name === 'm'){
-							countdown = Math.max(0,countdown-60)
+							addSecondsToTimer(-60)
 						}
 						if (name === 'M'){
-							countdown += 60
+							addSecondsToTimer(60)
 						}
 						if (name === 's'){
-							countdown = Math.max(0,countdown-1)
+							addSecondsToTimer(-1)
 						}
 						if (name === 'S'){
-							countdown += 1
+							addSecondsToTimer(1)
 						}
 					}
 				}, false);
 
-				
+				function addSecondsToTimer(sec) {
+					countdown = Math.max(0,countdown+sec)
+					mils = Math.max(0, mils+sec*1000)
+					displayMil(mils)
+				}
+
 				function clock() {
 					$('#time').removeClass('paused');
 					var curTime = new Date();
