@@ -4,6 +4,9 @@
 
 body {
    padding-top: 15px;
+   background-color: rgb(19, 19, 19);
+   color: rgb(255, 255, 255);
+   overflow: hidden; /* Hide scrollbars */
 }
 
 .center{

@@ -17,12 +17,14 @@
 				<div class="container">
 					<div class="center">
 						<div id="stopWatch">
-							<h1 id="title">Stopwatch</h1>
 							<div class="row">
 								<div class="span12">
 									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">00:00:00</div>
 								</div>
 							</div>
+							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+							<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 							<div class="row">
 								<div id="divStart" class="span4 center">
 									<button id="btnStart" class="btn btn-large btn-block btn-primary" style="font-weight:bold;" data-do="start" type="button">Start</button>
@@ -101,7 +103,7 @@
 				var paused = false;
 				var count = 0;
 				$('#time').on('click', function(){
-					if(mils != undefined){
+					/*if(mils != undefined){
 						if(mils > 0){
 							$('#lapInst').hide();	
 							var time = milToTime(mils);
@@ -112,6 +114,16 @@
 							$('#lapList').prepend('<tr class="timeRow"><td class="lapCount muted">' + count + ".</td><td>" +time.h +':'+time.m +':'+time.s + '.' + time.mils+  '</td></tr>');
 							$('#lapListCont').animate({ scrollTop: 0 }, "fast");
 						}
+					}*/
+					if(paused == false){
+						paused = true;
+						clearTimeout(timeout);	
+						pauseTime = mils;
+						$('#time').addClass('paused');
+					}else{
+						paused = false;
+						startTime = new Date();
+						clock();
 					}
 				});
 				
