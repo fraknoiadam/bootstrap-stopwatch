@@ -78,6 +78,39 @@
 
 					}
 				});
+
+				// Add event listener on keydown
+				document.addEventListener('keydown', (event) => {
+					var name = event.key;
+					var code = event.code;
+					console.log(event)
+					if (name === 'Control') {
+						// Do nothing.
+						return;
+					}
+					if (event.altKey) {
+						if (name === 'h'){
+							countdown = Math.max(0,countdown-60*60)
+							console.log(max(0,countdown-60*60))
+						}
+						if (name === 'H'){
+							countdown += 60*60
+						}
+						if (name === 'm'){
+							countdown = Math.max(0,countdown-60)
+						}
+						if (name === 'M'){
+							countdown += 60
+						}
+						if (name === 's'){
+							countdown = Math.max(0,countdown-1)
+						}
+						if (name === 'S'){
+							countdown += 1
+						}
+					}
+				}, false);
+
 				
 				function clock() {
 					$('#time').removeClass('paused');
