@@ -56,6 +56,7 @@
 				let init = true
 				let count = 0;
 				let countdown = 10800
+				let moment_of_paused = 0
 				displayMil(countdown*1000)
 
 				$('#time').on('click', function(){
@@ -71,7 +72,7 @@
 							$('#time').addClass('paused');
 						}else{
 							paused = false;
-							pauseTime = new Date() - moment_of_paused;
+							pauseTime = pauseTime + (new Date() - moment_of_paused);
 							clock();
 						}
 
