@@ -19,7 +19,7 @@
 						<div id="stopWatch">
 							<div class="row">
 								<div class="span12">
-									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">00:00:00</div>
+									<div id="time" class="pointable" style="font-weight:bold; width:100%; display:block;">3:00:00</div>
 								</div>
 							</div>
 							<div class="row">
@@ -100,6 +100,7 @@
 				let paused = false;
 				let init = true
 				let count = 0;
+				let countdown = 10800
 				$('#time').on('click', function(){
 					if (init == true){
 						init = false
@@ -166,7 +167,7 @@
 				function clock() {
 					$('#time').removeClass('paused');
 					var curTime = new Date();
-					mils = (curTime - startTime) + pauseTime;
+					mils = -(curTime - startTime) + pauseTime + countdown*1000;
 					var time = milToTime(mils);
 					formatTime(time);
 					var outStr = time.h +':'+time.m +':'+time.s;
@@ -187,7 +188,7 @@
 								time[i] = "0" + time[i];
 							}
 						}else if(time[i] < 10){
-							time[i] = "0" + time[i];
+							//time[i] = "0" + time[i];
 						}
 					}
 					return time;		
