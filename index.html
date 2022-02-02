@@ -73,11 +73,11 @@
 				let startTime; 
 				let timeout;
 				let pauseTime = 0;
-				let mils;
 				let paused = false;
 				let init = true
 				let count = 0;
 				let countdown = 10800
+				let mils = countdown*1000
 				let moment_of_paused = 0
 				let min_fade = 10
 				displayMil(countdown*1000)
@@ -116,16 +116,19 @@
 							document.body.style.color = "rgb(19, 19, 19)"
 						}
 						if (name === 'b'){
-							document.getElementById("time").style.fontSize = (parseInt(document.getElementById("time").style.fontSize)-1)+"rem"
+							newFontSize = Math.max(0,parseInt(document.getElementById("time").style.fontSize)-1)
+							document.getElementById("time").style.fontSize = newFontSize+"rem"
 						}
 						if (name === 'B'){
 							document.getElementById("time").style.fontSize = (parseInt(document.getElementById("time").style.fontSize)+1)+"rem"
 						}
 						if (name === 'v'){
-							document.getElementsByClassName("center")[0].style.marginBottom = (parseInt(document.getElementsByClassName("center")[0].style.marginBottom)-1)+"px"
+							newMarginBottom = Math.max(0,(parseInt(document.getElementsByClassName("center")[0].style.marginBottom)-1))
+							document.getElementsByClassName("center")[0].style.marginBottom = newMarginBottom+"px"
 						}
 						if (name === 'V'){
-							document.getElementsByClassName("center")[0].style.marginBottom = (parseInt(document.getElementsByClassName("center")[0].style.marginBottom)+1)+"px"
+							newMarginBottom = parseInt(document.getElementsByClassName("center")[0].style.marginBottom)+1
+							document.getElementsByClassName("center")[0].style.marginBottom = newMarginBottom+"px"
 						}
 						if (name === 'h'){
 							addSecondsToTimer(-3600)
@@ -150,6 +153,7 @@
 
 				function addSecondsToTimer(sec) {
 					countdown = Math.max(0,countdown+sec)
+					console.log(mils, sec)
 					mils = Math.max(0, mils+sec*1000)
 					displayMil(mils)
 				}
