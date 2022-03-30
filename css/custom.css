@@ -2,11 +2,24 @@
  * All your custom CSS should go into this file
  */
 
+:root {
+	--main-bg-color: rgb(255, 255, 255);
+	--main-txt-color: rgb(0,0,0);
+}
+
 body {
    padding-top: 15px;
-   background-color: rgb(19, 19, 19);
-   color: rgb(255, 255, 255);
+   background-color: var(--main-bg-color);
+   color: var(--main-txt-color);
    overflow: hidden; /* Hide scrollbars */
+   margin-left: 20px;
+   margin-right: 20px;
+}
+
+#information-for-competitors {
+	font-size: 5rem;
+	margin-top: 200px;
+	line-height: normal;
 }
 
 .center{
@@ -63,8 +76,8 @@ and (min-device-width : 768px)
 {
 /* Styles */
 	#time{
-		font-size:10rem;
-		margin:5px 0 5px 0; padding: 50px 0px 50px 0px;
+		font-size:15rem;
+		margin:80px 0 5px 0; padding: 50px 0px 50px 0px;
 	}
 }
 
@@ -82,4 +95,7 @@ div#hint {
 	opacity: 0;
 	height: 0;
   }
-  
+
+table, th, td {
+	border: 1px solid var(--main-txt-color);
+}

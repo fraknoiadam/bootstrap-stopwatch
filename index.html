@@ -23,28 +23,48 @@
 								</div>
 							</div>
 						</div>
+						<div id="information-for-competitors" style="display:none"></div>
 					</div>
 				</div>
 				<div id=frame_form>
-					<h3>Gyorstalpaló</h3>
-					<p>Ez egy stopper, ami kijelzi mennyi idő van még hátra a versenyből. Ha az órára rákattintasz, akkor elindul vagy megáll. Ha szeretnéd módosítani az időt, akkor "alt+m"-mel 1 percet levonsz, "alt+shift+m"-el 1 percet hozzáadsz (hasonlóan az "alt+s", "alt+shift+s", "alt+h", "alt+shift+h").
-					Ha csak időt szeretnél kijelezni, csak kattints a submit gombra és minden eltűnik. </p>
-					<p>Ha a pontozótáblát is szeretnéd látni, akkor a pontozótáblázat linkét írd be, majd kattints a submit gombra. (pro tip: kapcsold ki a táblázatban a képlet megjelenítését, a cellák közötti vonalakat és válts teljes képernyőre. Ezeket mind megtalálod a "Nézet/View" menüpont alatt)</p>
-					<h3>További gyorsbillentyűk:</h3>
-					<p>"alt+c" és "alt+C": dark illetve white mode<br>
-					"alt+v" és "alt+V": kicsinyíted illetve növeled a timer alatti térközt.<br>
-					"alt+b" és "alt+B": kicsinyíted illetve növeled a timer méretét</p><br>
-					<label for="fname">A beágyazandó táblázat megfelelő munkalapjának a linkje:</label>
-					<input type="text" id="frame_input" name="frame_input"><br>
-					<label for="fname">Hány perccel a verseny vége előtt tűnjön el a beágyazás?</label>
-					<input type="number" value=10 id="min_fade" name="min_fade"><br>
-					<button type="button" onclick="submit()">Submit</button>
-				</div>
-				<div id="hint" style="display: none;">
-					<iframe id="result" style="display: block;" width=100% height=1000px frameborder="0" src=""&widget=true></iframe>
+					<h3>How to use?</h3>
+					<p> If you click on the timer, then it will start/pause.<br>
+						There are some shortcuts that you can use any time.<br>
+						If you want to hide these instructions, then click the button below and they will disappear and the window goes to fullscreen.  (Note: The timer won't start, if you click the button.)<br>
+						Please note that if you close or refresh this tab, then the timer will be reseted.
+					</p>
+					<h3>Shortcuts</h3>
+					<table>
+						<tr>
+							<th>Shortcut</th>
+							<th>Function</th>
+						</tr>
+						<tr>
+							<td>alt+q, alt+Q</td>
+							<td>Switch to dark mode and to light mode</td>
+						</tr>
+						<tr>
+							<td>alt+h, alt+H</td>
+							<td>Decrease and increase the timer with 1 hour</td>
+						</tr>
+						<tr>
+							<td>alt+m, alt+M</td>
+							<td>Decrease and increase the timer with 1 minute</td>
+						</tr>
+						<tr>
+							<td>alt+s, alt+S</td>
+							<td>Decrease and increase the timer with 1 second</td>
+						</tr>
+						<tr>
+							<td>alt+b, alt+B</td>
+							<td>Decrease and increase the size of the timer</td>
+						</tr>
+					</table>
+					<p>Note: If you see a shortcut with uppercase e.g. "alt+A" then it is equivalent with the shortcut "alt+shift+a"</p>
+					<button type="button" onclick="submit()">Hide the instructions!</button>
+					<p>Befor you hide the instructions, press F11 to fullscreen the window!</p>
 				</div>
 			</header>
-
 
 			<!-- scripts -->
 			<!-- 
@@ -57,17 +77,11 @@
 
 			<script type="text/javascript">
 			function submit(){
-				min_fade = parseInt(document.getElementById("min_fade").value)
 				document.getElementById("frame_form").style.display = "None"
-				let link = document.getElementById("frame_input").value
-				if (link !== ""){
-					document.getElementById("result").src = document.getElementById("frame_input").value
-					document.getElementById("hint").style.display = "block"
-				}
 			}
 
 			$(document).ready(function(){
-				document.getElementById("time").style.fontSize = "10rem"
+				document.getElementById("time").style.fontSize = "15rem"
 				document.getElementsByClassName("center")[0].style.marginBottom = "0px"
 
 				let startTime; 
@@ -76,7 +90,11 @@
 				let paused = false;
 				let init = true
 				let count = 0;
-				let countdown = 10800
+				let countdown = 16200
+				let ask_question_from = 16201
+				let ask_question_to = 14400 // Az első 30 percben kiírja azt is, hogy "You may ask questions."
+				let leave_room_from = 1800
+				let leave_room_to = 1 // Az utolsó 30 percben pirosra vált a felirat, és azt írja ki, hogy "You are not allowed to leave the room until the end of the competition."
 				let mils = countdown*1000
 				let moment_of_paused = 0
 				let min_fade = 10
@@ -107,13 +125,13 @@
 					var name = event.key;
 					var code = event.code;
 					if (event.altKey) {
-						if (name === 'c'){
-							document.body.style.color = "rgb(255, 255, 255)"
-							document.body.style.backgroundColor = "rgb(19, 19, 19)"
+						if (name === 'q'){
+							document.documentElement.style.setProperty("--main-bg-color","rgb(255,255,255)")
+							document.documentElement.style.setProperty("--main-txt-color","rgb(19,19,19)")
 						}
-						if (name === 'C'){
-							document.body.style.backgroundColor = "rgb(255, 255, 255)"
-							document.body.style.color = "rgb(19, 19, 19)"
+						if (name === 'Q'){
+							document.documentElement.style.setProperty("--main-bg-color","rgb(0,0,0)")
+							document.documentElement.style.setProperty("--main-txt-color","rgb(255,255,255)")
 						}
 						if (name === 'b'){
 							newFontSize = Math.max(0,parseInt(document.getElementById("time").style.fontSize)-1)
@@ -170,10 +188,16 @@
 				function displayMil(mils){
 					let time = milToTime(mils);
 					formatTime(time);
-					if(time.h === 0 && time.m<min_fade){ // TODO: consider hours
-						document.getElementById("result").display = "None"
-						var hint = document.getElementById('hint');
-						hint.classList.add('h-hide');
+					if(time.h*3600+time.m*60+time.s <= ask_question_from && time.h*3600+time.m*60+time.s >= ask_question_to){
+						document.getElementById("information-for-competitors").style.display = "block"
+						document.getElementById("information-for-competitors").innerHTML = "You may ask questions."
+					}
+					else if(time.h*3600+time.m*60+time.s <= leave_room_from && time.h*3600+time.m*60+time.s >= leave_room_to){
+						document.getElementById("information-for-competitors").style.display = "block"
+						document.getElementById("information-for-competitors").style.color = "red"
+						document.getElementById("information-for-competitors").innerHTML = "You are not allowed to leave the room until the end of the competition."
+					} else {
+						document.getElementById("information-for-competitors").innerHTML = ""
 					}
 					let outStr = time.h +':'+time.m +':'+time.s;
 					document.getElementById('time').innerHTML=outStr;
