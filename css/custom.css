@@ -5,6 +5,7 @@
 :root {
 	--main-bg-color: rgb(255, 255, 255);
 	--main-txt-color: rgb(0,0,0);
+	--alert-color: red;
 }
 
 body {
@@ -20,6 +21,7 @@ body {
 	font-size: 5rem;
 	margin-top: 200px;
 	line-height: normal;
+	font-weight: bold;
 }
 
 .center{
@@ -98,4 +100,8 @@ div#hint {
 
 table, th, td {
 	border: 1px solid var(--main-txt-color);
+}
+
+.alert-text {
+	color: var(--alert-color)
 }

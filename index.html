@@ -127,11 +127,13 @@
 					if (event.altKey) {
 						if (name === 'q'){
 							document.documentElement.style.setProperty("--main-bg-color","rgb(255,255,255)")
-							document.documentElement.style.setProperty("--main-txt-color","rgb(19,19,19)")
+							document.documentElement.style.setProperty("--main-txt-color","rgb(0,0,0)")
+							document.documentElement.style.setProperty("--alert-color","rgb(255,0,0)")
 						}
 						if (name === 'Q'){
-							document.documentElement.style.setProperty("--main-bg-color","rgb(0,0,0)")
+							document.documentElement.style.setProperty("--main-bg-color","rgb(19,19,19)")
 							document.documentElement.style.setProperty("--main-txt-color","rgb(255,255,255)")
+							document.documentElement.style.setProperty("--alert-color","rgb(255,255,0)")
 						}
 						if (name === 'b'){
 							newFontSize = Math.max(0,parseInt(document.getElementById("time").style.fontSize)-1)
@@ -171,7 +173,6 @@
 
 				function addSecondsToTimer(sec) {
 					countdown = Math.max(0,countdown+sec)
-					console.log(mils, sec)
 					mils = Math.max(0, mils+sec*1000)
 					displayMil(mils)
 				}
@@ -188,15 +189,19 @@
 				function displayMil(mils){
 					let time = milToTime(mils);
 					formatTime(time);
-					if(time.h*3600+time.m*60+time.s <= ask_question_from && time.h*3600+time.m*60+time.s >= ask_question_to){
+					hours = parseInt(time.h)
+					min = parseInt(time.m)
+					sec = parseInt(time.s)
+					if(hours*3600+min*60+sec <= ask_question_from && hours*3600+min*60+sec >= ask_question_to){
 						document.getElementById("information-for-competitors").style.display = "block"
 						document.getElementById("information-for-competitors").innerHTML = "You may ask questions."
 					}
-					else if(time.h*3600+time.m*60+time.s <= leave_room_from && time.h*3600+time.m*60+time.s >= leave_room_to){
+					else if(hours*3600+min*60+sec <= leave_room_from && hours*3600+min*60+sec >= leave_room_to){
 						document.getElementById("information-for-competitors").style.display = "block"
-						document.getElementById("information-for-competitors").style.color = "red"
+						document.getElementById("information-for-competitors").classList.add("alert-text")
 						document.getElementById("information-for-competitors").innerHTML = "You are not allowed to leave the room until the end of the competition."
 					} else {
+						document.getElementById("information-for-competitors").className = ""
 						document.getElementById("information-for-competitors").innerHTML = ""
 					}
 					let outStr = time.h +':'+time.m +':'+time.s;
